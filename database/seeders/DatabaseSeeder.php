@@ -7,6 +7,7 @@ use \App\Models\University;
 use \App\Models\User;
 use \App\Models\Skill;
 use \App\Models\CV;
+use DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,14 +24,16 @@ class DatabaseSeeder extends Seeder
           'name' => 'Иван',
           'surname' => 'Петров',
           'family' => 'Запрянов',
-          'birthdate' => '1996-09-05 07:27:22'
+          'birthdate' => '1996-09-05 07:27:22',
+          'university_id' => 1
         ]);
 
         User::create([
           'name' => 'Паскал',
           'surname' => 'Заимов',
           'family' => 'Лефтеров',
-          'birthdate' => '1992-05-02 06:17:32'
+          'birthdate' => '1992-05-02 06:17:32',
+          'university_id' => 2
         ]);
 
         University::create([
@@ -64,6 +67,24 @@ class DatabaseSeeder extends Seeder
           'skill' => 'HTML'
         ]);
 
+        DB::table('skill_user')->insert([
+          [
+            'user_id' => 1,
+            'skill_id' => 1
+          ],
+          [
+            'user_id' => 1,
+            'skill_id' => 2
+          ],
+          [
+            'user_id' => 2,
+            'skill_id' => 1
+          ],
+          [
+            'user_id' => 2,
+            'skill_id' => 3
+          ],
 
+        ]);
     }
 }

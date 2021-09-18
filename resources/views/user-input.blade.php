@@ -12,15 +12,15 @@ USER INPUT
   <input id="datepicker" class="form-input" type="text" name="birthdate" placeholder="Дата на раждане . . ." value="">
 
   <select class="form-input" name="university">
-    <option value="">Universitet 1</option>
-    <option value="">Universitet 2</option>
+    <option value="1">Universitet 1</option>
+    <option value="2">Universitet 2</option>
   </select>
 
-  <select class="form-input" name="skills" multiple>
-      <option value="">Laravel</option>
-      <option value="">CakePHP</option>
-      <option value="">PHP</option>
-      <option value="">JavaScript</option>
+  <select class="form-input" name="skills[]" multiple>
+      <option value="1">Laravel</option>
+      <option value="2">CakePHP</option>
+      <option value="3">PHP</option>
+      <option value="4">JavaScript</option>
   </select>
 
   <button type="submit" name="button">Запис на CV</button>

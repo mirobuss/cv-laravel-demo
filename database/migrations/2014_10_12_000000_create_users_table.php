@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('surname', 250);
             $table->string('family', 250);
             $table->timestamp('birthdate');
+            $table->smallInteger('university_id');
             $table->rememberToken();
             $table->timestamps();
         });

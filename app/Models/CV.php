@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CV extends Model
 {
     use HasFactory;
+
+    protected $table = "cvs";
+    public $timestamps = false;
 }
