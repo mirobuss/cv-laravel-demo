@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('user-input');
 });
+
+Route::post('user-input', [\App\Http\Controllers\FrontController::class, 'submitCv']);
