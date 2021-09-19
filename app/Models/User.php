@@ -45,4 +45,14 @@ class User extends Authenticatable
     public function skills(){
        return $this->belongsToMany(\App\Models\Skill::class);
     }
+
+    public function university()
+    {
+      return $this->belongsTo(\App\Models\University::class);
+    }
+
+    public function cv()
+    {
+      return $this->hasOne(\App\Models\CV::class);
+    }
 }

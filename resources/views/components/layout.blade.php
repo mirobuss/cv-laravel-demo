@@ -8,10 +8,21 @@
     <link rel="stylesheet" href="/css/app.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/js/app.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <script type="text/javascript">
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    </script>
   </head>
 
   <body>
     {{ $slot }}
   </body>
+
+  <script type="text/javascript" src="/js/app.js"></script>
 </html>

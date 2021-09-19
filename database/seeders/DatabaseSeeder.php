@@ -67,6 +67,16 @@ class DatabaseSeeder extends Seeder
           'skill' => 'HTML'
         ]);
 
+        CV::create([
+          'user_id' => 1,
+          'details' => 'Примерен текст на CV-то, вкаран от някакъв хипотетичен input '
+        ]);
+
+        CV::create([
+          'user_id' => 2,
+          'details' => 'Някакъв примерен текст на CV-то, вкаран от някакъв хипотетичен input '
+        ]);
+
         DB::table('skill_user')->insert([
           [
             'user_id' => 1,

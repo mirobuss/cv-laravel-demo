@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\FrontController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('user-input');
-});
+Route::get('/', [FrontController::class, 'index']);
+Route::get('/cv-list', [FrontController::class, 'showCVs']);
 
-Route::post('user-input', [\App\Http\Controllers\FrontController::class, 'submitCv']);
+Route::post('user-input', [FrontController::class, 'submitCv']);
+Route::post('result-set', [FrontController::class, 'getResults']);
