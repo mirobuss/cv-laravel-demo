@@ -49,11 +49,21 @@ class FrontController extends Controller
       $cv->save();
     }
 
+    public function submitSkill()
+    {
+      dd(request()->all());
+    }
+
+    public function submitUniversity()
+    {
+      dd(request()->all());
+    }
+
     public function getResults()
     {
-      \Illuminate\Support\Facades\DB::listen(function($query){
-        logger($query->sql);
-      });
+      // \Illuminate\Support\Facades\DB::listen(function($query){
+      //   logger($query->sql);
+      // });
 
       $date_from = (new Carbon(request('date_from')))->toDateTimeString();
       $date_to =   (new Carbon(request('date_to')))->toDateTimeString();

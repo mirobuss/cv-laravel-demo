@@ -33,9 +33,51 @@ $('#show-results').on('click', function(e) {
 
     },
     error: function (xhr, ajaxOptions, thrownError) {
-      //these parameters are for later usage, when I decide to make the error reporting more advanced
-      // alert(xhr.status);
-      // alert(thrownError);
+
+      $('.alert-danger').show();
+      $('.alert-danger').delay(3000).fadeOut(350);
+    }
+  });
+});
+
+//pencil onclick
+$('i.fas').on('click', function(){
+
+   //clearErrors();
+     let modalBox = '.'+$(this).attr('data-type');
+     $(modalBox).css('display','flex');
+});
+
+function closeModalBox(x){
+  $(x).closest('.modal-box').hide();
+}
+
+
+
+$('.submit-skill').on('click', function(e) {
+
+  let technology = $('.modal-skill input[name="technology"]').val();
+  console.log(technology);
+  $.ajax({
+    url:'/submit-skill',
+    type:'post',
+    data:{
+      technology: technology,
+    },
+    success:function(response){
+
+      $('.modal-skill input[name="technology"]').val();
+      $('.modal-skill').css('display','none');
+      console.log('success');
+      // var results = $('#results_found').val();
+      // if(results == undefined){ results = 0;}
+      //
+      // $('#search_results span').html(' ' + results);
+      // $('#search_results').fadeIn(350);
+
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+
       $('.alert-danger').show();
       $('.alert-danger').delay(3000).fadeOut(350);
     }

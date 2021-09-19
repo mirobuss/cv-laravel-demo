@@ -19,3 +19,5 @@ Route::get('/cv-list', [FrontController::class, 'showCVs']);
 
 Route::post('user-input', [FrontController::class, 'submitCv']);
 Route::post('result-set', [FrontController::class, 'getResults']);
+Route::post('submit-skill', [FrontController::class, 'submitSkill']);
+Route::post('submit-university', [FrontController::class, 'submitUniversity']);
