@@ -66,20 +66,69 @@ $('.submit-skill').on('click', function(e) {
     },
     success:function(response){
 
-      $('.modal-skill input[name="technology"]').val();
+      $('.modal-skill input[name="technology"]').val('');
       $('.modal-skill').css('display','none');
-      console.log('success');
-      // var results = $('#results_found').val();
-      // if(results == undefined){ results = 0;}
-      //
-      // $('#search_results span').html(' ' + results);
-      // $('#search_results').fadeIn(350);
+      console.log(response);
+
+      let html = '<option value="' + response.id + '">' + response.name + '</option>';
+      $('.skills-select').append(html);
 
     },
     error: function (xhr, ajaxOptions, thrownError) {
 
-      $('.alert-danger').show();
-      $('.alert-danger').delay(3000).fadeOut(350);
+      console.log($.parseJSON(xhr.responseText).errors);
+
+      let errors = $.parseJSON(xhr.responseText).errors;
+      $('.modal-skill div.errors').show();
+      $.each(errors, function(k, v){
+         $.each(v, function(kk, error){
+           $('.modal-skill div.errors ul').append('<li>' + error + '</li>');
+         });
+      });
+
+      // $('.alert-danger').show();
+      // $('.alert-danger').delay(3000).fadeOut(350);
+    }
+  });
+});
+
+$('.submit-university').on('click', function(e) {
+
+  let name = $('.modal-university input[name="name"]').val();
+  let accreditation = $('.modal-university input[name="accreditation"]').val();
+
+  $.ajax({
+    url:'/submit-university',
+    type:'post',
+    data:{
+      name: name,
+      accreditation: accreditation
+    },
+    success:function(response){
+
+      $('.modal-university input[name="name"]').val('');
+      $('.modal-university input[name="accreditation"]').val('');
+      $('.modal-university').css('display','none');
+      console.log(response);
+
+      let html = '<option value="' + response.id + '">' + response.name + '</option>';
+      $('.universities-select').append(html);
+
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+
+      console.log($.parseJSON(xhr.responseText).errors);
+
+      let errors = $.parseJSON(xhr.responseText).errors;
+      $('.modal-university div.errors').show();
+      $.each(errors, function(k, v){
+         $.each(v, function(kk, error){
+           $('.modal-university div.errors ul').append('<li>' + error + '</li>');
+         });
+      });
+
+      // $('.alert-danger').show();
+      // $('.alert-danger').delay(3000).fadeOut(350);
     }
   });
 });

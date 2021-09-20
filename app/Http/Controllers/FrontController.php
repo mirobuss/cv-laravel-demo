@@ -9,6 +9,9 @@ use \App\Models\University;
 use \App\Models\Skill;
 
 use Carbon\Carbon;
+use Validator;
+use Response;
+use Session;
 
 class FrontController extends Controller
 {
@@ -28,6 +31,39 @@ class FrontController extends Controller
 
     public function submitCv()
     {
+      //dd(request()->all());
+
+      $rules = [
+        'name' => 'required|min:3|alpha',
+        'surname' => 'required|min:3|alpha',
+        'family' => 'required|min:3|alpha',
+        'birthdate' => 'required|date',
+        'skills' => 'required'
+      ];
+
+      $messages = array(
+        'name.required'=>'Полето с името е задължително',
+        'name.min' => 'Дължината на името трябва да е поне 3 символа',
+        'name.alpha' => 'Полето име може да съдържа само букви',
+        'surname.required'=>'Полето презиме е задължително',
+        'surname.min' => 'Дължината на презимето трябва да е поне 3 символа',
+        'surname.alpha' => 'Полето презиме може да съдържа само букви',
+        'family.required'=>'Полето фамилия е задължително',
+        'family.min' => 'Дължината на фамилията трябва да е поне 3 символа',
+        'family.alpha' => 'Полето фамилия може да съдържа само букви',
+        'birthdate.required' => 'Полето с датата е задължително',
+        'birthdate.date' => 'Форматът на датата е сгрешен',
+        'skills.required' => 'Изберете поне една технология'
+      );
+
+      $validator = Validator::make(request()->all(), $rules, $messages);
+
+      if($validator->fails()){
+
+        return back()->withInput()->withErrors($validator);
+      }
+
+
       $jquery_date = request('birthdate');
       $date = (new Carbon($jquery_date))->toDateTimeString();
 
@@ -47,16 +83,72 @@ class FrontController extends Controller
       $cv->user_id = $user->id;
       $cv->details = "Примерен текст на CV-то, вкаран от някакъв хипотетичен input";
       $cv->save();
+
+      Session::flash('message', 'CV-то е изпратено успешно.');
+      Session::flash('code', 'success');
+
+      return back();
     }
 
     public function submitSkill()
     {
-      dd(request()->all());
+
+      $rules = [
+        'technology' => 'required'
+      ];
+
+      $messages = [
+        'technology.required' => 'Полето технологии не може да бъде празно'
+      ];
+
+      $validator = Validator::make(request()->all(), $rules, $messages);
+
+      if($validator->fails()){
+        return Response::json(array(
+            'success' => false,
+            'errors' => $validator->getMessageBag()->toArray()
+
+        ), 400);
+      }
+
+      $skill = new Skill();
+      $skill->skill = request('technology');
+      $skill->save();
+
+      return ['id' => $skill->id, 'name' => request('technology')];
     }
 
     public function submitUniversity()
     {
-      dd(request()->all());
+
+      $rules = [
+        'name' => 'required|min:3',
+        'accreditation' => 'required|numeric'
+      ];
+
+      $messages = [
+        'name.required' => "Името на университета не може да бъде празно",
+        'name.min' => "Името на университета не може да бъде по-малко от 3 символа",
+        'accreditation.required' => "Полето акредитация не може да бъде празно",
+        'accreditation.numeric' => "Оценката трябва да бъде число"
+      ];
+
+      $validator = Validator::make(request()->all(), $rules, $messages);
+
+      if($validator->fails()){
+        return Response::json(array(
+            'success' => false,
+            'errors' => $validator->getMessageBag()->toArray()
+
+        ), 400);
+      }
+
+      $uni = new University();
+      $uni->name = request('name');
+      $uni->accreditation = request('accreditation');
+      $uni->save();
+
+      return ['id' => $uni->id, 'name' => request('name')];
     }
 
     public function getResults()

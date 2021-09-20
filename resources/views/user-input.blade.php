@@ -2,17 +2,19 @@
 
 USER INPUT
 
+<x-flash-messages />
+
 <form class="" action="/user-input" method="post">
 
   {{ csrf_field() }}
 
-  <input class="form-input" type="text" name="name" placeholder="Име . . ." value="">
-  <input class="form-input" type="text" name="surname" placeholder="Презиме . . ." value="">
-  <input class="form-input" type="text" name="family" placeholder="Фамилия . . ." value="">
-  <input class="form-input datepicker" type="text" name="birthdate" placeholder="Дата на раждане . . ." value="">
+  <input class="form-input" type="text" name="name" placeholder="Име . . ." value="{{old('name')}}">
+  <input class="form-input" type="text" name="surname" placeholder="Презиме . . ." value="{{old('surname')}}">
+  <input class="form-input" type="text" name="family" placeholder="Фамилия . . ." value="{{old('family')}}">
+  <input class="form-input datepicker" type="text" name="birthdate" placeholder="Дата на раждане . . ." value="{{old('birthdate')}}">
 
   <div class="form-input">
-    <select class="" name="university">
+    <select class="universities-select" name="university">
       @foreach($universities as $university)
       <option value="{{ $university->id }}">{{ $university->name }}</option>
       @endforeach
@@ -21,7 +23,7 @@ USER INPUT
   </div>
 
   <div class="form-input">
-    <select class="" name="skills[]" multiple>
+    <select class="skills-select" name="skills[]" multiple>
       @foreach($skills as $skill)
       <option value="{{ $skill->id }}">{{ $skill->skill }}</option>
       @endforeach
@@ -63,8 +65,8 @@ USER INPUT
 
     </div>
     <p>Въведете нов университет</p>
-    <input type="text" name="" value="" placeholder="Име . . .">
-    <input type="text" name="" value="" placeholder="Акредитация . . .">
+    <input type="text" name="name" value="" placeholder="Име . . .">
+    <input type="text" name="accreditation" value="" placeholder="Акредитация . . .">
     <button class="submit-btn submit-university" type="button" name="button">Запис</button>
 
   </div>
