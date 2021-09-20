@@ -60,7 +60,7 @@
   <div class="grid-cell">
     {{ $user->cv->details }}
   </div>
-  
+
   @endforeach
 </div> <!-- grid-table -->
 
@@ -69,8 +69,8 @@
 <style media="screen">
 
 .results-container {
-  background:#eeefb5;
-  min-height:100vh;
+  background:#dee6f2;
+  margin-top: 20px;
 }
 
 .grid-table{
@@ -86,8 +86,6 @@
 .loop {
   text-align:center;
 }
-
-
 
 div {
   box-sizing: border-box;

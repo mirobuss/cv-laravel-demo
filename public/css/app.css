@@ -1,12 +1,72 @@
 body {
-  background: orange;
+  background: #ffd663;
 }
 
-.form-input {
-  display:block;
+.page-container {
+
+  display:flex;
+  flex-direction:column;
+  text-align:center;
+}
+
+form {
+
+
+}
+
+.form-input, select {
+
   margin-bottom: 5px;
+  font-size:17px;
+  padding:5px;
+}
+
+.inputs-container {
+  display:flex;
+  justify-content:center;
+}
+
+.left-container, .right-container {
+  text-align:left;
+  padding:15px;
 }
 
 .datepicker-container input {
   display:inline-block;
+}
+
+select {
+  width:200px;
+}
+
+.submit-cv {
+  background:none;
+  padding:15px;
+  border: 1px solid black;
+  display: inline-block;
+  margin:15px;
+  font-size:15px;
+}
+
+.show-cvs {
+  display:inline-block;
+  text-decoration:none;
+  font-size:15px;
+  color:black;
+  padding:15px;
+  border:1px solid black;
+}
+
+.show-cvs:hover, .submit-cv:hover {
+   cursor:pointer;
+}
+
+.datepicker-container {
+  margin:20px;
+  padding:20px;
+}
+
+.datepicker-container input {
+  margin:20px;
+  margin-right:3px;
 }

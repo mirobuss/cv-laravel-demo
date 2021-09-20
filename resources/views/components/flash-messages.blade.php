@@ -32,8 +32,8 @@
 }
 
 .success {
-  background:#77ff6e;
-  color:black;
+  background:#368e30;
+  color:white;
 }
 
 .error {

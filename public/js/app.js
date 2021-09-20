@@ -1,4 +1,5 @@
 console.log('works');
+//$('div.errors').hide();
 $( function() {
   $( ".datepicker" ).datepicker({
     showOn: "button",
@@ -45,11 +46,14 @@ $('i.fas').on('click', function(){
 
    //clearErrors();
      let modalBox = '.'+$(this).attr('data-type');
+
      $(modalBox).css('display','flex');
+     $(modalBox).closest('.modal-overlay').show();
 });
 
 function closeModalBox(x){
   $(x).closest('.modal-box').hide();
+  $('.modal-overlay').hide();
 }
 
 
@@ -68,6 +72,7 @@ $('.submit-skill').on('click', function(e) {
 
       $('.modal-skill input[name="technology"]').val('');
       $('.modal-skill').css('display','none');
+      $('.modal-overlay').hide();
       console.log(response);
 
       let html = '<option value="' + response.id + '">' + response.name + '</option>';
@@ -80,14 +85,14 @@ $('.submit-skill').on('click', function(e) {
 
       let errors = $.parseJSON(xhr.responseText).errors;
       $('.modal-skill div.errors').show();
+      $('.modal-skill div.errors ul').html('');
       $.each(errors, function(k, v){
          $.each(v, function(kk, error){
            $('.modal-skill div.errors ul').append('<li>' + error + '</li>');
          });
       });
 
-      // $('.alert-danger').show();
-      // $('.alert-danger').delay(3000).fadeOut(350);
+      $('.modal-skill div.errors').delay(2000).fadeOut(350);
     }
   });
 });
@@ -121,14 +126,14 @@ $('.submit-university').on('click', function(e) {
 
       let errors = $.parseJSON(xhr.responseText).errors;
       $('.modal-university div.errors').show();
+      $('.modal-university div.errors ul').html('');
       $.each(errors, function(k, v){
          $.each(v, function(kk, error){
            $('.modal-university div.errors ul').append('<li>' + error + '</li>');
          });
       });
 
-      // $('.alert-danger').show();
-      // $('.alert-danger').delay(3000).fadeOut(350);
+      $('.modal-university div.errors').delay(2000).fadeOut(350);
     }
   });
 });

@@ -7,6 +7,7 @@ use \App\Models\User;
 use \App\Models\CV;
 use \App\Models\University;
 use \App\Models\Skill;
+use App\Http\Helpers\GlobalHelper;
 
 use Carbon\Carbon;
 use Validator;
@@ -63,17 +64,27 @@ class FrontController extends Controller
         return back()->withInput()->withErrors($validator);
       }
 
-
       $jquery_date = request('birthdate');
       $date = (new Carbon($jquery_date))->toDateTimeString();
 
-      //dd(request()->all());
+      $check_user = User::where('name','=', request('name'))
+               ->where('surname', '=', request('surname'))
+               ->where('family', '=', request('family'))
+               ->where('birthdate', '=', $date)->first();
 
-      $user = new User();
-      $user->name = request('name');
-      $user->surname = request('surname');
-      $user->family = request('family');
-      $user->birthdate = $date;
+      if($check_user) {
+
+         $user = $check_user;
+
+      } else {
+
+        $user = new User();
+        $user->name = request('name');
+        $user->surname = request('surname');
+        $user->family = request('family');
+        $user->birthdate = $date;
+      }
+
       $user->university_id = request('university');
       $user->save();
 
@@ -94,11 +105,12 @@ class FrontController extends Controller
     {
 
       $rules = [
-        'technology' => 'required'
+        'technology' => 'required|alpha_num'
       ];
 
       $messages = [
-        'technology.required' => 'Полето технологии не може да бъде празно'
+        'technology.required' => 'Полето технологии не може да бъде празно',
+        'technology.alpha_num' => 'Не е разрешено използването на специални символи'
       ];
 
       $validator = Validator::make(request()->all(), $rules, $messages);
@@ -122,13 +134,14 @@ class FrontController extends Controller
     {
 
       $rules = [
-        'name' => 'required|min:3',
+        'name' => 'required|min:3|alpha_num',
         'accreditation' => 'required|numeric'
       ];
 
       $messages = [
         'name.required' => "Името на университета не може да бъде празно",
         'name.min' => "Името на университета не може да бъде по-малко от 3 символа",
+        'name.alpha_num' => "Не е разрешено използването на специални символи за името",
         'accreditation.required' => "Полето акредитация не може да бъде празно",
         'accreditation.numeric' => "Оценката трябва да бъде число"
       ];
@@ -139,7 +152,6 @@ class FrontController extends Controller
         return Response::json(array(
             'success' => false,
             'errors' => $validator->getMessageBag()->toArray()
-
         ), 400);
       }
 
@@ -156,6 +168,24 @@ class FrontController extends Controller
       // \Illuminate\Support\Facades\DB::listen(function($query){
       //   logger($query->sql);
       // });
+      //GlobalHelper::test();
+
+      $rules = [
+        'date_from' => 'date',
+        'date_to' => 'date'
+      ];
+
+      $messages = [
+        'date_from.date' => "Грешено форматирана дата",
+        'date_to.date' => "Грешено форматирана дата"
+      ];
+
+      $validator = Validator::make(request()->all(), $rules, $messages);
+
+      if($validator->fails())
+      {
+        //TODO
+      }
 
       $date_from = (new Carbon(request('date_from')))->toDateTimeString();
       $date_to =   (new Carbon(request('date_to')))->toDateTimeString();
