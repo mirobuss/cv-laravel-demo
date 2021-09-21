@@ -1,5 +1,13 @@
 <div class="flash-message">
 
+  <div class="success-hidden success">
+      <strong>{{ Session::get('message') }}</strong>
+  </div>
+
+  <div class="error-hidden error">
+      <strong>{{ Session::get('message') }}</strong>
+  </div>
+
   @if (Session::get('code') == 'success')
   <div class="success">
       <strong>{{ Session::get('message') }}</strong>
@@ -24,6 +32,9 @@
 
 <style media="screen">
 
+.success-hidden, .error-hidden {
+  display:none;
+}
 
 .flash-message strong {
   padding:15px;

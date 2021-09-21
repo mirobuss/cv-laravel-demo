@@ -1,5 +1,4 @@
-console.log('works');
-//$('div.errors').hide();
+
 $( function() {
   $( ".datepicker" ).datepicker({
     showOn: "button",
@@ -8,6 +7,14 @@ $( function() {
     buttonText: "Select date"
   });
 } );
+
+function success(response){
+  $('.modal-overlay').hide();
+  $('.flash-message').show();
+  $('.success-hidden').css('display', 'block');
+  $('.success-hidden strong').html(response.success);
+  $('.success-hidden').delay(2000).fadeOut(350);
+}
 
 $('#show-results').on('click', function(e) {
   e.preventDefault();
@@ -25,12 +32,7 @@ $('#show-results').on('click', function(e) {
     success:function(response){
 
       $('.result-set').append(response);
-      console.log('success');
-      // var results = $('#results_found').val();
-      // if(results == undefined){ results = 0;}
-      //
-      // $('#search_results span').html(' ' + results);
-      // $('#search_results').fadeIn(350);
+
 
     },
     error: function (xhr, ajaxOptions, thrownError) {
@@ -57,12 +59,6 @@ $('#show-aggregated-results').on('click', function(e) {
     success:function(response){
 
       $('.result-set').append(response);
-      console.log('response');
-      // var results = $('#results_found').val();
-      // if(results == undefined){ results = 0;}
-      //
-      // $('#search_results span').html(' ' + results);
-      // $('#search_results').fadeIn(350);
 
     },
     error: function (xhr, ajaxOptions, thrownError) {
@@ -76,7 +72,6 @@ $('#show-aggregated-results').on('click', function(e) {
 //pencil onclick
 $('i.fas').on('click', function(){
 
-   //clearErrors();
      let modalBox = '.'+$(this).attr('data-type');
 
      $(modalBox).css('display','flex');
@@ -88,12 +83,10 @@ function closeModalBox(x){
   $('.modal-overlay').hide();
 }
 
-
-
 $('.submit-skill').on('click', function(e) {
 
   let technology = $('.modal-skill input[name="technology"]').val();
-  console.log(technology);
+
   $.ajax({
     url:'/submit-skill',
     type:'post',
@@ -104,16 +97,13 @@ $('.submit-skill').on('click', function(e) {
 
       $('.modal-skill input[name="technology"]').val('');
       $('.modal-skill').css('display','none');
-      $('.modal-overlay').hide();
-      console.log(response);
+      success(response);
 
       let html = '<option value="' + response.id + '">' + response.name + '</option>';
       $('.skills-select').append(html);
 
     },
     error: function (xhr, ajaxOptions, thrownError) {
-
-      console.log($.parseJSON(xhr.responseText).errors);
 
       let errors = $.parseJSON(xhr.responseText).errors;
       $('.modal-skill div.errors').show();
@@ -146,15 +136,14 @@ $('.submit-university').on('click', function(e) {
       $('.modal-university input[name="name"]').val('');
       $('.modal-university input[name="accreditation"]').val('');
       $('.modal-university').css('display','none');
-      console.log(response);
+
+      success(response);
 
       let html = '<option value="' + response.id + '">' + response.name + '</option>';
       $('.universities-select').append(html);
 
     },
     error: function (xhr, ajaxOptions, thrownError) {
-
-      console.log($.parseJSON(xhr.responseText).errors);
 
       let errors = $.parseJSON(xhr.responseText).errors;
       $('.modal-university div.errors').show();

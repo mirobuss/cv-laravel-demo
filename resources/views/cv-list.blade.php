@@ -6,10 +6,10 @@
 </div>
 
 <div class="">
-  <button id="show-results" type="button" name="button">Направи справка</button>
+  <button id="show-results" class="result-btn" type="button" name="button">Направи справка</button>
 </div>
 <div class="">
-  <button id="show-aggregated-results">Направи справка GROUP BY </button>
+  <button id="show-aggregated-results" class="result-btn">Направи справка GROUP BY </button>
 </div>
 
 <div class="result-set">

@@ -17,7 +17,6 @@ use DB;
 
 class FrontController extends Controller
 {
-
     public function index()
     {
         $universities = University::all();
@@ -35,33 +34,12 @@ class FrontController extends Controller
     {
       //dd(request()->all());
 
-      $rules = [
-        'name' => 'required|min:3|alpha',
-        'surname' => 'required|min:3|alpha',
-        'family' => 'required|min:3|alpha',
-        'birthdate' => 'required|date',
-        'skills' => 'required'
-      ];
-
-      $messages = array(
-        'name.required'=>'Полето с името е задължително',
-        'name.min' => 'Дължината на името трябва да е поне 3 символа',
-        'name.alpha' => 'Полето име може да съдържа само букви',
-        'surname.required'=>'Полето презиме е задължително',
-        'surname.min' => 'Дължината на презимето трябва да е поне 3 символа',
-        'surname.alpha' => 'Полето презиме може да съдържа само букви',
-        'family.required'=>'Полето фамилия е задължително',
-        'family.min' => 'Дължината на фамилията трябва да е поне 3 символа',
-        'family.alpha' => 'Полето фамилия може да съдържа само букви',
-        'birthdate.required' => 'Полето с датата е задължително',
-        'birthdate.date' => 'Форматът на датата е сгрешен',
-        'skills.required' => 'Изберете поне една технология'
-      );
+      $rules = GlobalHelper::getRules('submitCv');
+      $messages = GlobalHelper::getMessages('submitCv'); ;
 
       $validator = Validator::make(request()->all(), $rules, $messages);
 
       if($validator->fails()){
-
         return back()->withInput()->withErrors($validator);
       }
 
@@ -105,14 +83,8 @@ class FrontController extends Controller
     public function submitSkill()
     {
 
-      $rules = [
-        'technology' => 'required|alpha_num'
-      ];
-
-      $messages = [
-        'technology.required' => 'Полето технологии не може да бъде празно',
-        'technology.alpha_num' => 'Не е разрешено използването на специални символи'
-      ];
+      $rules = GlobalHelper::getRules('submitSkill');
+      $messages = GlobalHelper::getMessages('submitSkill');
 
       $validator = Validator::make(request()->all(), $rules, $messages);
 
@@ -128,24 +100,14 @@ class FrontController extends Controller
       $skill->skill = request('technology');
       $skill->save();
 
-      return ['id' => $skill->id, 'name' => request('technology')];
+      return ['id' => $skill->id, 'name' => request('technology'), 'success' => 'Записът е направен успешно'];
     }
 
     public function submitUniversity()
     {
 
-      $rules = [
-        'name' => 'required|min:3|alpha_num',
-        'accreditation' => 'required|numeric'
-      ];
-
-      $messages = [
-        'name.required' => "Името на университета не може да бъде празно",
-        'name.min' => "Името на университета не може да бъде по-малко от 3 символа",
-        'name.alpha_num' => "Не е разрешено използването на специални символи за името",
-        'accreditation.required' => "Полето акредитация не може да бъде празно",
-        'accreditation.numeric' => "Оценката трябва да бъде число"
-      ];
+      $rules = GlobalHelper::getRules('submitUniversity');
+      $messages = GlobalHelper::getMessages('submitUniversity');
 
       $validator = Validator::make(request()->all(), $rules, $messages);
 
@@ -161,7 +123,7 @@ class FrontController extends Controller
       $uni->accreditation = request('accreditation');
       $uni->save();
 
-      return ['id' => $uni->id, 'name' => request('name')];
+      return ['id' => $uni->id, 'name' => request('name'), 'success' => 'Записът е направен успешно'];
     }
 
     public function getResults()
@@ -198,10 +160,6 @@ class FrontController extends Controller
 
     public function getAggregatedResults()
     {
-      // \Illuminate\Support\Facades\DB::listen(function($query){
-      //   logger($query->sql);
-      // });
-      //GlobalHelper::test();
 
       $rules = [
         'date_from' => 'date',
@@ -226,14 +184,12 @@ class FrontController extends Controller
       // $date_from = (new Carbon('09/05/1983'))->toDateTimeString();
       // $date_to =   (new Carbon('09/16/2021'))->toDateTimeString();
 
-
      $resultset = DB::select("SELECT count(users.name) as 'candidates', TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age, sub.skill FROM users
                            INNER JOIN universities AS uni ON users.university_id = uni.id
                            INNER JOIN (SELECT skill, skill_id, user_id as s_user_id FROM skills
                            INNER JOIN skill_user ON skills.id = skill_user.skill_id) as sub on sub.s_user_id = users.id
                            WHERE users.birthdate BETWEEN '". $date_from."' AND '" . $date_to ."'
                            group by skill, age");
-      //$users = User::whereBetween('birthdate', [$date_from, $date_to])->with('skills', 'university', 'cv')->get();
 
      // dd($resultset);
 

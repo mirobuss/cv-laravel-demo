@@ -1,37 +1,42 @@
 <div class="results-container">
 
-<div class="grid-table">
+@if(count($resultset) > 0)
+  <div class="grid-table">
 
-  <div class="grid-cell">
-    <strong>Брой кандидати</strong>
-  </div>
+    <div class="grid-cell">
+      <strong>Брой кандидати</strong>
+    </div>
 
-  <div class="grid-cell">
-    <strong>Възраст</strong>
-  </div>
+    <div class="grid-cell">
+      <strong>Възраст</strong>
+    </div>
 
-  <div class="grid-cell">
-    <strong>Технология</strong>
-  </div>
+    <div class="grid-cell">
+      <strong>Технология</strong>
+    </div>
 
-  @foreach($resultset as $result)
+    @foreach($resultset as $result)
 
-  <div class="grid-cell loop">
-      {{ $result->candidates }}
-  </div>
+    <div class="grid-cell loop">
+        {{ $result->candidates }}
+    </div>
 
-  <div class="grid-cell">
-    {{ $result->age }}
-  </div>
+    <div class="grid-cell">
+      {{ $result->age }}
+    </div>
 
-  <div class="grid-cell">
-    {{ $result->skill }}
-  </div>
+    <div class="grid-cell">
+      {{ $result->skill }}
+    </div>
 
 
-  @endforeach
-</div> <!-- grid-table -->
-
+    @endforeach
+  </div> <!-- grid-table -->
+@else
+<div class="no-results">
+  <p>Няма намерени резултати</p>
+</div>
+@endif
 </div>
 
 <style media="screen">
@@ -53,6 +58,11 @@
 
 .loop {
   text-align:center;
+}
+
+.no-results {
+  padding: 30px;
+  font-size: 25px;
 }
 
 div {
