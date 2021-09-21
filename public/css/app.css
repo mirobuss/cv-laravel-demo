@@ -59,6 +59,8 @@ select {
 
 .show-cvs:hover, .submit-cv:hover {
    cursor:pointer;
+   color:#cecece;
+   background:black;
 }
 
 .datepicker-container {

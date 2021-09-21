@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Validator;
 use Response;
 use Session;
+use DB;
 
 class FrontController extends Controller
 {
@@ -194,4 +195,49 @@ class FrontController extends Controller
 
       return view('ajax.results', compact('users'));
     }
+
+    public function getAggregatedResults()
+    {
+      // \Illuminate\Support\Facades\DB::listen(function($query){
+      //   logger($query->sql);
+      // });
+      //GlobalHelper::test();
+
+      $rules = [
+        'date_from' => 'date',
+        'date_to' => 'date'
+      ];
+
+      $messages = [
+        'date_from.date' => "Грешено форматирана дата",
+        'date_to.date' => "Грешено форматирана дата"
+      ];
+
+      $validator = Validator::make(request()->all(), $rules, $messages);
+
+      if($validator->fails())
+      {
+        //TODO
+      }
+
+      $date_from = (new Carbon(request('date_from')))->toDateTimeString();
+      $date_to =   (new Carbon(request('date_to')))->toDateTimeString();
+
+      // $date_from = (new Carbon('09/05/1983'))->toDateTimeString();
+      // $date_to =   (new Carbon('09/16/2021'))->toDateTimeString();
+
+
+     $resultset = DB::select("SELECT count(users.name) as 'candidates', TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age, sub.skill FROM users
+                           INNER JOIN universities AS uni ON users.university_id = uni.id
+                           INNER JOIN (SELECT skill, skill_id, user_id as s_user_id FROM skills
+                           INNER JOIN skill_user ON skills.id = skill_user.skill_id) as sub on sub.s_user_id = users.id
+                           WHERE users.birthdate BETWEEN '". $date_from."' AND '" . $date_to ."'
+                           group by skill, age");
+      //$users = User::whereBetween('birthdate', [$date_from, $date_to])->with('skills', 'university', 'cv')->get();
+
+     // dd($resultset);
+
+      return view('ajax.aggregated-results', compact('resultset'));
+    }
+
 }

@@ -8,6 +8,9 @@
 <div class="">
   <button id="show-results" type="button" name="button">Направи справка</button>
 </div>
+<div class="">
+  <button id="show-aggregated-results">Направи справка GROUP BY </button>
+</div>
 
 <div class="result-set">
 

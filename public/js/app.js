@@ -41,6 +41,38 @@ $('#show-results').on('click', function(e) {
   });
 });
 
+$('#show-aggregated-results').on('click', function(e) {
+  e.preventDefault();
+  $('.result-set').html('');
+  let date_from = $('.date-from').val();
+  let date_to = $('.date-to').val();
+
+  $.ajax({
+    url:'/cv-list-group',
+    type:'post',
+    data:{
+      date_from: date_from,
+      date_to: date_to
+    },
+    success:function(response){
+
+      $('.result-set').append(response);
+      console.log('response');
+      // var results = $('#results_found').val();
+      // if(results == undefined){ results = 0;}
+      //
+      // $('#search_results span').html(' ' + results);
+      // $('#search_results').fadeIn(350);
+
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+
+      $('.alert-danger').show();
+      $('.alert-danger').delay(3000).fadeOut(350);
+    }
+  });
+});
+
 //pencil onclick
 $('i.fas').on('click', function(){
 
